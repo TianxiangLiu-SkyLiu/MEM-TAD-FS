@@ -1,0 +1,38 @@
+# Python/runtime
+__pycache__/
+*.py[cod]
+*.pyo
+*.so
+.pytest_cache/
+.mypy_cache/
+
+# Local IDE/editor
+.vscode/
+.idea/
+
+# Experiment outputs and caches
+cache/
+result/
+result_part/
+runs/
+outputs/
+logs/
+wandb/
+
+# Model/data artifacts
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.pkl
+*.npy
+*.npz
+*.h5
+*.hdf5
+
+# Generated metric dumps can be kept locally unless explicitly curated.
+*.csv
+
+# OS files
+.DS_Store
+Thumbs.db

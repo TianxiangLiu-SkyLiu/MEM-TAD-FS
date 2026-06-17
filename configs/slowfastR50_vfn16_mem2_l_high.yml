@@ -1,0 +1,83 @@
+mem_block: mem_block2
+feature_size: [2304, 1, 17, 34]
+memory_size: l  # l, m, s
+view_frames_num: 3  # The number of frames the model can view at one time
+max_detection_num: 150  # The maximum number of detections the model can handle at one time
+
+# training setting (not finialized)
+optimizer: AdamW
+resume_use_cfg_lr: true
+resume_use_cfg_plateau_min_lr: true
+first_epoch_first_video_id: "1245"
+lr: 0.00004
+weight_decay: 0.0001
+lr_warmup_enabled: false
+lr_warmup_epochs: 3
+lr_warmup_start_factor: 0.1
+lr_plateau_enabled: true
+lr_plateau_monitor: map0
+lr_plateau_mode: max
+lr_plateau_factor: 0.5
+lr_plateau_patience: 2
+lr_plateau_threshold: 0.0001
+lr_plateau_threshold_mode: abs
+lr_plateau_cooldown: 0
+lr_plateau_min_lr: 0.00000001
+lr_plateau_eps: 0.00000001
+epochs: 300
+batch_size: 1
+
+
+# loss setting
+conf_weight: 0.0
+loc_weight: 2.0
+cls_weight: 1.0
+match_iou_threshold: 0.05
+loss_focal_gamma: 2.0
+loss_focal_alpha: 0.25
+loss_neg_pos_ratio: 3.0
+loss_iou_weight: 1.0
+loss_label_smoothing: 0.05
+eps: 1e-6
+
+
+# dataset
+input_type: frames  # video or frames
+frames_dir: /home/liutianxiang/datasets/tennis_match_annalysis/frames
+starting_frame_number: 1
+annotations_json_path: /home/liutianxiang/datasets/tennis_match_annalysis/MEM_TAD_format/tennisnet_annotations_high.json
+dataset_cache_dir: /home/liutianxiang/datasets/tennis_match_annalysis/features/slowfast/slowfast_r50_nf32_sr1_alp4_720x1280
+
+# data loading set
+async_prefetch_next_video: True
+prefetch_videos_ahead: 9
+prefetch_workers: 9
+
+cache_load_to_device: True  # if true, load cached tensors directly onto cfg.device rather than CPU
+dataloader_num_workers: 18      # 或更多，取决于 CPU 核心数
+dataloader_pin_memory: true
+preprocess_on_gpu: true
+eval_conf_threshold: 0.003
+grad_clip_norm: 5.0
+
+postprocess_nms_enabled: true
+postprocess_nms_type: soft  # hard or soft
+postprocess_nms_iou_threshold: 0.5
+postprocess_nms_sigma: 0.4
+postprocess_nms_min_score: 0.001
+postprocess_nms_max_detections: 150
+
+# model head regularization
+head_channels: 128
+det_head_hidden_dim: 384
+head_dropout: 0.05
+head_token_dropout: 0.05
+pre_head_memory_refine_enabled: true
+pre_head_memory_refine_kernel_t: 5
+pre_head_memory_refine_dropout: 0.05
+memory_dropout: 0.02
+deep_mem: True  # whether to use a second memory block for deeper temporal modeling
+
+
+# output
+output_dir: /home/liutianxiang/program_python/Tennis/end2end/MEM-TAD_woEncoder/result/slowfastR50_vfn16_mem2_l_high_test1

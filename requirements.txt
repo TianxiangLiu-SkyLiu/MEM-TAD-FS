@@ -1,0 +1,8 @@
+pyyaml
+pathlib
+torch==2.8.0
+torchvision==0.23.0
+opencv-python==4.13.0.92
+decord==0.6.0
+tqdm==4.67.3
+lz4==4.3.2
