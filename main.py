@@ -1,8 +1,9 @@
+import sys
 import argparse
 import logging
+
 from utils.trainer import train_model
 from utils.validator import val_model
-import sys
 
 
 def main(args):
@@ -23,10 +24,15 @@ if __name__ == '__main__':
     )
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--cfg', type=str, help='the config file to use')
-    parser.add_argument('--mode', type=str, help='train or val')
+    parser.add_argument('--cfg', type=str, required=True, help='the config file to use')
+    parser.add_argument('--mode', choices=['train', 'val'], required=True)
     parser.add_argument('--device', default='cuda', help='device to use for training / testing')
     parser.add_argument('--resume', default='', help='resume from checkpoint')
+    parser.add_argument(
+        '--predictions-out',
+        default='',
+        help='optional JSON path for exporting post-processed per-video predictions in validation mode',
+    )
     parser.add_argument(
         '--map-eval-scope',
         choices=['global', 'video'],
@@ -37,6 +43,3 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     main(args)
-
-
-# python main.py --cfg /home/liutianxiang/program_python/Tennis/end2end/MEM-TAD/configs/rn18_h608w1080_vfn100_s.yml --mode train --device cuda:7

@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the MEM-TAD manuscript."
+title: "MEM-TAD: Learning Observation and Evolution Memory States for Fine-Grained Temporal Action Detection in Continuous Tennis Videos"
+type: software
+authors:
+  - family-names: Xiao
+    given-names: Huiyang
+  - family-names: Liu
+    given-names: Tianxiang
+  - family-names: Zhou
+    given-names: Guoxu
+  - family-names: Li
+    given-names: Yuhang
+repository-code: "https://github.com/TianxiangLiu-SkyLiu/MEM-TAD-FS"
+license: MIT
+version: 1.0.0
+date-released: 2026-08-28

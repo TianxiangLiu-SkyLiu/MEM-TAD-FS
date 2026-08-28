@@ -1,0 +1,135 @@
+\begin{tikzpicture}[
+  x=1cm,
+  y=1cm,
+  >=Latex,
+  font=\sffamily,
+  flow/.style={-Latex, line width=0.8pt, draw=ink},
+  shallowflow/.style={-Latex, line width=0.9pt, draw=shallow},
+  deepflow/.style={-Latex, line width=0.9pt, draw=deep},
+  innovationflow/.style={-Latex, line width=0.9pt, draw=query},
+  block/.style={draw=ink, line width=0.65pt, rounded corners=2pt,
+    minimum height=0.82cm, align=center, inner sep=4pt, fill=white,
+    font=\sffamily\fontsize{7.0}{8.0}\selectfont},
+  state/.style={draw=ink, line width=0.75pt, rounded corners=2pt,
+    minimum width=1.25cm, minimum height=0.88cm, align=center, inner sep=3pt,
+    font=\sffamily\fontsize{7.5}{8.5}\selectfont},
+  op/.style={circle, draw=ink, line width=0.75pt, fill=white,
+    minimum size=0.62cm, inner sep=0pt,
+    font=\bfseries\fontsize{9}{10}\selectfont},
+  phase/.style={rounded corners=2pt, minimum height=0.48cm, align=center,
+    font=\bfseries\sffamily\fontsize{7.6}{8.7}\selectfont, text=white},
+  note/.style={font=\sffamily\fontsize{6.1}{7.0}\selectfont, text=muted,
+    align=center},
+  tinylabel/.style={font=\sffamily\fontsize{5.8}{6.6}\selectfont, text=ink,
+    align=center},
+]
+
+\definecolor{ink}{HTML}{263238}
+\definecolor{muted}{HTML}{60747A}
+\definecolor{linegray}{HTML}{CAD4D6}
+\definecolor{featurefill}{HTML}{EEF2F2}
+\definecolor{shallow}{HTML}{138A72}
+\definecolor{shallowfill}{HTML}{DDF3EC}
+\definecolor{deep}{HTML}{3268A8}
+\definecolor{deepfill}{HTML}{E2ECF8}
+\definecolor{query}{HTML}{C98216}
+\definecolor{queryfill}{HTML}{FFF0D5}
+\definecolor{detect}{HTML}{8B4A86}
+\definecolor{detectfill}{HTML}{F3E7F1}
+
+% Panel headers
+\node[phase, fill=shallow, minimum width=9.65cm] at (5.05,6.10)
+  {(a) OBSERVATION-DETAIL UPDATE};
+\node[phase, fill=deep, minimum width=9.65cm] at (15.25,6.10)
+  {(b) EVENT-EVOLUTION UPDATE};
+\draw[dashed, line width=0.55pt, draw=linegray] (10.10,0.82) -- (10.10,5.72);
+
+% Shallow-memory observation projection
+\node[state, fill=featurefill] (feature) at (0.62,3.58) {$F_t$};
+\node[block, fill=featurefill, minimum width=1.48cm] (generator) at (2.18,3.58)
+  {observation\\projector $\phi_a^s$};
+\node[state, fill=shallowfill, draw=shallow] (activation) at (3.72,3.58)
+  {$A_t^s$};
+\draw[flow] (feature.east) -- (generator.west);
+\draw[shallowflow] (generator.east) -- (activation.west);
+\node[tinylabel] at (1.36,2.94) {current feature block};
+
+% Shallow-memory gated write
+\node[state, fill=shallowfill, draw=shallow] (sprev) at (3.72,5.00)
+  {$M_{t-1}^s$};
+\node[op, draw=shallow] (sconcat) at (4.82,4.18) {$\Vert$};
+\node[block, fill=shallowfill, minimum width=1.42cm,
+  font=\sffamily\fontsize{6.5}{7.4}\selectfont] (sproposal) at (6.05,4.92)
+  {candidate state\\$P_t^s=\phi_p^s(\cdot)$};
+\node[block, fill=detectfill, minimum width=1.42cm,
+  font=\sffamily\fontsize{6.5}{7.4}\selectfont] (sgate) at (6.05,3.18)
+  {update gate\\$G_t^s=\sigma(\phi_g^s(\cdot))$};
+\node[block, fill=shallowfill, draw=shallow, minimum width=2.05cm,
+  text width=1.88cm, font=\sffamily\fontsize{6.4}{7.3}\selectfont] (smix) at (7.95,4.05)
+  {gated interpolation\\[-1pt]
+   $(1-G_t^s)\odot M_{t-1}^s$\\[-1pt]
+   $+\,G_t^s\odot P_t^s$};
+\node[state, fill=shallowfill, draw=shallow, minimum width=1.05cm,
+  font=\sffamily\fontsize{7.0}{8.0}\selectfont] (sout) at (9.52,4.05)
+  {\textbf{Shallow}\\$M_t^s$};
+\draw[shallowflow] (activation.east) -- ++(0.31,0) |- (sconcat.south);
+\draw[shallowflow] (sprev.east) -- ++(0.35,0) |- (sconcat.north);
+\draw[shallowflow] (sconcat.east) -- ++(0.25,0) |- (sproposal.west);
+\draw[shallowflow] (sconcat.east) -- ++(0.25,0) |- (sgate.west);
+\draw[shallowflow] (sproposal.east) -- ++(0.26,0) |- (smix.north);
+\draw[shallowflow] (sgate.east) -- ++(0.26,0) |- (smix.south);
+\draw[shallowflow] (sprev.north) -- ++(0,0.12) -| (smix.north);
+\draw[shallowflow] (smix.east) -- (sout.west);
+
+% Innovation bridge between the two memory roles
+\node[state, fill=shallowfill, draw=shallow] (sprev2) at (11.05,5.02)
+  {$M_{t-1}^s$};
+\node[op, draw=query] (difference) at (11.50,3.78) {$-$};
+\node[state, fill=queryfill, draw=query, minimum width=1.38cm] (innovation) at (12.68,3.78)
+  {$\Delta M_t^s$};
+\draw[innovationflow] (sout.east) -- node[tinylabel, above] {$M_t^s$} (difference.west);
+\draw[innovationflow] (sprev2.south) -- (difference.north);
+\draw[innovationflow] (difference.east) -- (innovation.west);
+\node[tinylabel, text=query] at (11.67,2.98)
+  {$\Delta M_t^s=M_t^s-M_{t-1}^s$};
+
+% Deep-memory transition write
+\node[state, fill=deepfill, draw=deep] (dprev) at (13.48,5.02)
+  {$M_{t-1}^d$};
+\node[op, draw=deep] (dconcat) at (14.18,3.78) {$\Vert$};
+\node[block, fill=deepfill, minimum width=1.42cm,
+  font=\sffamily\fontsize{6.5}{7.4}\selectfont] (dproposal) at (15.52,4.72)
+  {candidate state\\$P_t^d=\phi_p^d(\cdot)$};
+\node[block, fill=detectfill, minimum width=1.42cm,
+  font=\sffamily\fontsize{6.5}{7.4}\selectfont] (dgate) at (15.52,2.84)
+  {update gate\\$G_t^d=\sigma(\phi_g^d(\cdot))$};
+\node[block, fill=deepfill, draw=deep, minimum width=2.05cm,
+  text width=1.88cm, font=\sffamily\fontsize{6.4}{7.3}\selectfont] (dmix) at (17.58,3.78)
+  {gated interpolation\\[-1pt]
+   $(1-G_t^d)\odot M_{t-1}^d$\\[-1pt]
+   $+\,G_t^d\odot P_t^d$};
+\node[state, fill=deepfill, draw=deep, minimum width=1.05cm,
+  font=\sffamily\fontsize{7.0}{8.0}\selectfont] (dout) at (19.35,3.78)
+  {\textbf{Deep}\\$M_t^d$};
+\draw[innovationflow] (innovation.east) -- (dconcat.west);
+\draw[deepflow] (dprev.south) -- ++(0,-0.34) -| (dconcat.north);
+\draw[deepflow] (dconcat.east) -- ++(0.25,0) |- (dproposal.west);
+\draw[deepflow] (dconcat.east) -- ++(0.25,0) |- (dgate.west);
+\draw[deepflow] (dproposal.east) -- ++(0.26,0) |- (dmix.north);
+\draw[deepflow] (dgate.east) -- ++(0.26,0) |- (dmix.south);
+\draw[deepflow] (dprev.north) -- ++(0,0.10) -| (dmix.north);
+\draw[deepflow] (dmix.east) -- (dout.west);
+
+% Functional interpretation and implementation note
+\node[block, fill=shallowfill, draw=shallow, minimum width=7.60cm,
+  text width=8.35cm, font=\sffamily\fontsize{6.5}{7.4}\selectfont,
+  minimum height=0.62cm] at (5.05,1.33)
+  {\textbf{Observation-detail role:} direct observation write\\preserves current appearance and boundary evidence};
+\node[block, fill=deepfill, draw=deep, minimum width=7.60cm,
+  text width=8.35cm, font=\sffamily\fontsize{6.5}{7.4}\selectfont,
+  minimum height=0.62cm] at (15.25,1.33)
+  {\textbf{Event-evolution role:} innovation-only write\\accumulates transition context};
+\node[note] at (10.15,0.48)
+  {Both gates are learned element-wise. The deep gate uses a more negative initialization bias; active masks retain the previous state for completed streams.};
+
+\end{tikzpicture}

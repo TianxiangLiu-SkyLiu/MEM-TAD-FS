@@ -1,8 +1,9 @@
-pyyaml
-pathlib
+numpy>=1.24
+PyYAML>=6.0
+scipy>=1.10
 torch==2.8.0
 torchvision==0.23.0
-opencv-python==4.13.0.92
-decord==0.6.0
-tqdm==4.67.3
-lz4==4.3.2
+Pillow>=9.5
+tqdm>=4.66
+lz4>=4.3
+matplotlib>=3.7
