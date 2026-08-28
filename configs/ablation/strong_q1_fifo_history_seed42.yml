@@ -1,0 +1,12 @@
+_base_: ./base_19_c16_t64_middle.yml
+
+# Non-recurrent history baseline. The memory tensor stores the latest 64
+# projected observations in chronological FIFO order.
+seed: 42
+mem_block: fifo_mem_block
+deep_mem: false
+shallow_memory_update_mode: recurrent
+memory_transformer_prior_source: shallow
+memory_transformer_deep_prior_enabled: true
+memory_transformer_deep_prior_loss_enabled: true
+output_dir: ./outputs/ablation/strong_q1_fifo_history/seed42

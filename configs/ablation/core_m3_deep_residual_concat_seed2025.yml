@@ -1,0 +1,3 @@
+_base_: ./core_m3_deep_residual_concat.yml
+seed: 2025
+output_dir: ./outputs/ablation/core_m3_deep_residual_concat/seed2025

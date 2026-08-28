@@ -1,0 +1,7 @@
+_base_: ./base_19_middle.yml
+
+shallow_memory_update_mode: recurrent
+deep_mem: false
+memory_transformer_deep_prior_enabled: false
+memory_transformer_deep_prior_loss_enabled: false
+output_dir: ./outputs/ablation/core_m1_shallow_only/seed3407

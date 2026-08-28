@@ -1,0 +1,13 @@
+_base_: ./base_19_c16_t64_middle.yml
+
+# Standard single-state recurrent baseline. The same state supplies both the
+# main decoder evidence and the proposal prior.
+mem_block: convgru_mem_block
+deep_mem: false
+shallow_memory_update_mode: recurrent
+memory_transformer_prior_source: shallow
+memory_transformer_deep_prior_enabled: true
+memory_transformer_deep_prior_loss_enabled: true
+convgru_update_gate_init_bias: 0.0
+convgru_reset_gate_init_bias: 0.0
+output_dir: ./outputs/ablation/strong_g1_single_convgru/seed3407

@@ -1,0 +1,182 @@
+# Paper configuration: MEM-TAD with SlowFast features on TennisNet-middle.
+mem_block: mem_block2
+feature_size: [2304, 1, 17, 34]
+memory_size: l  # legacy fallback; explicit dimensions below take precedence
+memory_channels: 16
+memory_temporal_size: 64
+shallow_memory_update_mode: recurrent
+deep_memory_input_mode: residual
+deep_memory_reset_each_clip: false
+view_frames_num: 3
+
+max_detection_num: 80
+use_temporal_references: true
+temporal_ref_widths: [0.02, 0.06, 0.18]
+temporal_ref_query_counts: [40, 25, 15]
+
+memory_transformer_head_enabled: true
+memory_transformer_aux_loss_enabled: true
+memory_transformer_aux_loss_weight: 0.4
+memory_transformer_encoder_proposal_enabled: false
+memory_transformer_encoder_proposal_loss_enabled: false
+memory_transformer_encoder_proposal_loss_weight: 0.1
+memory_transformer_query_mode: fixed
+memory_transformer_hybrid_fixed_queries: 80
+memory_transformer_hybrid_proposal_queries: 0
+memory_transformer_dim: 256
+memory_transformer_heads: 8
+memory_transformer_encoder_layers: 2
+memory_transformer_decoder_layers: 3
+memory_transformer_ff_dim: 1024
+memory_transformer_dropout: 0.05
+memory_transformer_lr_scale: 1.0
+memory_transformer_weight_decay_scale: 1.0
+memory_transformer_iterative_refine_enabled: true
+memory_transformer_iterative_refine_detach: true
+
+memory_transformer_deep_prior_enabled: true
+memory_transformer_deep_prior_loss_enabled: true
+memory_transformer_deep_prior_loss_weight: 0.2
+memory_transformer_deep_prior_context_scale: 3.0
+memory_transformer_deep_prior_points: 7
+memory_transformer_deep_prior_delta_scale: 0.75
+memory_transformer_deep_prior_query_gate_bias: -2.0
+
+denoising_enabled: true
+denoising_groups: 3
+denoising_label_noise_ratio: 0.1
+denoising_box_noise_scale: 0.3
+denoising_loss_weight: 0.3
+denoising_aux_loss_weight: 0.1
+denoising_max_queries: 60
+
+# Disabled historical branches are kept explicit for reproducibility.
+reference_attention_enabled: false
+reference_attention_layers: 1
+reference_attention_points: 7
+reference_attention_context_scale: 1.5
+reference_attention_context_dim: 128
+reference_attention_dropout: 0.05
+joint_memory_detection_enabled: false
+joint_memory_dim: 64
+joint_memory_dropout: 0.15
+joint_memory_lr_scale: 0.5
+joint_memory_weight_decay_scale: 5.0
+joint_memory_points: 7
+joint_memory_shallow_context_scale: 1.0
+joint_memory_deep_context_scale: 3.0
+joint_memory_max_residual_scale: 0.1
+joint_memory_residual_gate_bias: -1.0
+memory_proposal_refine_enabled: false
+memory_proposal_refine_dim: 64
+memory_proposal_refine_points: 7
+memory_proposal_refine_dropout: 0.05
+memory_proposal_refine_shallow_context_scale: 1.0
+memory_proposal_refine_deep_context_scale: 3.0
+memory_proposal_refine_max_boundary_shift: 0.25
+memory_proposal_refine_max_center_shift: 0.25
+memory_proposal_refine_max_log_width_delta: 0.35
+memory_proposal_refine_gate_bias: -6.0
+memory_auxiliary_enabled: false
+shallow_boundary_aux_weight: 0.1
+shallow_boundary_aux_sigma: 0.02
+shallow_boundary_aux_pos_weight: 4.0
+deep_class_aux_weight: 0.1
+memory_auxiliary_dropout: 0.1
+
+# Training.
+optimizer: AdamW
+seed: 3407
+deterministic_training: true
+resume_use_cfg_lr: true
+resume_use_cfg_plateau_min_lr: true
+first_epoch_first_video_id: "1172"
+lr: 0.00005
+weight_decay: 0.0001
+lr_warmup_enabled: true
+lr_warmup_epochs: 5
+lr_warmup_start_factor: 0.1
+lr_plateau_enabled: true
+lr_plateau_monitor: avg_map
+lr_plateau_mode: max
+lr_plateau_factor: 0.75
+lr_plateau_patience: 6
+lr_plateau_threshold: 0.0001
+lr_plateau_threshold_mode: abs
+lr_plateau_cooldown: 0
+lr_plateau_min_lr: 0.00000001
+lr_plateau_eps: 0.00000001
+epochs: 300
+batch_size: 5
+ema_enabled: true
+ema_decay: 0.999
+ema_eval_enabled: true
+
+# Detection loss and matching.
+conf_weight: 1.0
+loc_weight: 1.0
+cls_weight: 1.5
+match_iou_threshold: 0.05
+loss_focal_gamma: 2.0
+loss_focal_alpha: 0.25
+loss_quality_focal_beta: 2.0
+loss_neg_pos_ratio: 3.0
+loss_iou_weight: 1.0
+loss_label_smoothing: 0.05
+eps: 1e-6
+loss_force_gt_match: true
+loss_matcher: hungarian
+loss_match_cost_class: 1.0
+loss_match_class_warmup_epochs: 3
+loss_match_cost_l1: 1.0
+loss_match_cost_iou: 2.0
+loss_match_topk_per_gt: 0
+
+# Dataset and pre-extracted SlowFast features. Paths are relative to the
+# repository root; edit them if your data is stored elsewhere.
+input_type: features
+frames_dir: null
+starting_frame_number: 1
+annotations_json_path: ./data/TennisNet/annotations/tennisnet_annotations_middle.json
+dataset_cache_dir: ./data/TennisNet/features/slowfast
+async_prefetch_next_video: true
+prefetch_videos_ahead: 9
+prefetch_workers: 9
+cache_load_to_device: true
+dataloader_num_workers: 18
+dataloader_pin_memory: true
+preprocess_on_gpu: true
+
+# Evaluation and post-processing.
+map_eval_scope: global
+# Avg. mAP reported in the paper is the mean over tIoU 0.3--0.7.
+avg_map_iou_thresholds: [0.3, 0.4, 0.5, 0.6, 0.7]
+eval_conf_threshold: 0.001
+detection_score_mode: quality_x_class
+grad_clip_norm: 6.0
+postprocess_nms_enabled: true
+postprocess_nms_type: soft
+postprocess_nms_iou_threshold: 0.1
+postprocess_nms_sigma: 0.4
+postprocess_nms_min_score: 0.0001
+postprocess_nms_max_detections: 150
+postprocess_class_selection: flatten_topk
+postprocess_pre_nms_topk: 1000
+
+# Legacy dense head settings; inactive when transformer head is enabled.
+head_channels: 256
+det_head_hidden_dim: 1024
+head_dropout: 0.05
+head_token_dropout: 0.05
+pre_head_memory_refine_enabled: false
+pre_head_memory_refine_kernel_t: 5
+pre_head_memory_refine_dropout: 0.05
+memory_dropout: 0.0
+memory_proposal_dropout: 0.0
+shallow_gate_init_bias: 0.0
+deep_gate_init_bias: -2.2
+memory_diagnostics_enabled: true
+memory_diagnostics_stride: 4
+deep_mem: true
+
+output_dir: ./outputs/tennisnet/slowfast/middle/seed3407

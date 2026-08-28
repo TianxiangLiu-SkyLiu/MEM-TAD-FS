@@ -1,0 +1,3 @@
+_base_: ./core_m4_deep_prior_no_aux.yml
+seed: 2025
+output_dir: ./outputs/ablation/core_m4_deep_prior_no_aux/seed2025

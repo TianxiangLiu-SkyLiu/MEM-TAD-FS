@@ -1,0 +1,3 @@
+_base_: ./base_19_middle.yml
+
+output_dir: ./outputs/ablation/core_m5_full/seed3407

@@ -1,0 +1,5 @@
+_base_: ./slowfast_middle.yml
+
+feature_size: [512, 1, 28, 28]
+dataset_cache_dir: ./data/TennisNet/features/c3d
+output_dir: ./outputs/tennisnet/c3d/middle/seed3407

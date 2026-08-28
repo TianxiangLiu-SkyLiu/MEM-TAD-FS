@@ -1,0 +1,8 @@
+_base_: ./base_19_middle.yml
+
+# Parameter control: deep memory reads the shallow state rather than its change.
+deep_mem: true
+deep_memory_input_mode: shallow
+memory_transformer_deep_prior_enabled: false
+memory_transformer_deep_prior_loss_enabled: false
+output_dir: ./outputs/ablation/core_m2_deep_shallow_input_concat/seed3407

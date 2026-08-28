@@ -1,0 +1,8 @@
+_base_: ./base_19_middle.yml
+
+# Capacity-matched current-observation projection; no recurrent history.
+shallow_memory_update_mode: stateless
+deep_mem: false
+memory_transformer_deep_prior_enabled: false
+memory_transformer_deep_prior_loss_enabled: false
+output_dir: ./outputs/ablation/core_m0_stateless_observation/seed3407

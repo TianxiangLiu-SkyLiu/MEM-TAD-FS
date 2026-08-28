@@ -1,0 +1,4 @@
+_base_: ./c3d_middle.yml
+
+annotations_json_path: ./data/TennisNet/annotations/tennisnet_annotations_low.json
+output_dir: ./outputs/tennisnet/c3d/low/seed3407

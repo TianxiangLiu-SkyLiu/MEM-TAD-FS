@@ -1,0 +1,3 @@
+_base_: ./core_m6_deep_reset_each_clip.yml
+seed: 42
+output_dir: ./outputs/ablation/core_m6_deep_reset_each_clip/seed42

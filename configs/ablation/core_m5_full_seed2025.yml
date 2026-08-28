@@ -1,0 +1,3 @@
+_base_: ./core_m5_full.yml
+seed: 2025
+output_dir: ./outputs/ablation/core_m5_full/seed2025

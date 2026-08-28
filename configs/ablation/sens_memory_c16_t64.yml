@@ -1,0 +1,5 @@
+_base_: ./base_19_middle.yml
+
+memory_channels: 16
+memory_temporal_size: 64
+output_dir: ./outputs/ablation/sens_memory_c16_t64

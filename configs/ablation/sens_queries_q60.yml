@@ -1,0 +1,6 @@
+_base_: ./base_19_middle.yml
+
+max_detection_num: 60
+temporal_ref_query_counts: [30, 19, 11]
+memory_transformer_hybrid_fixed_queries: 60
+output_dir: ./outputs/ablation/sens_queries_q60

@@ -1,0 +1,5 @@
+_base_: ./base_19_middle.yml
+
+temporal_ref_widths: [0.06]
+temporal_ref_query_counts: [80]
+output_dir: ./outputs/ablation/det_single_scale_reference

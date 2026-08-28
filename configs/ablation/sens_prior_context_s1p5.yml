@@ -1,0 +1,4 @@
+_base_: ./base_19_middle.yml
+
+memory_transformer_deep_prior_context_scale: 1.5
+output_dir: ./outputs/ablation/sens_prior_context_s1p5

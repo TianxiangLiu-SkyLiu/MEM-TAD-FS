@@ -1,0 +1,3 @@
+_base_: ./core_m1_shallow_only.yml
+seed: 42
+output_dir: ./outputs/ablation/core_m1_shallow_only/seed42

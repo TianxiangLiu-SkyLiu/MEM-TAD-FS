@@ -1,0 +1,4 @@
+_base_: ./i3d_middle.yml
+
+annotations_json_path: ./data/TennisNet/annotations/tennisnet_annotations_high.json
+output_dir: ./outputs/tennisnet/i3d/high/seed3407

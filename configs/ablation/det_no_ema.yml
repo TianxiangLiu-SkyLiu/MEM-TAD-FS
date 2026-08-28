@@ -1,0 +1,5 @@
+_base_: ./base_19_middle.yml
+
+ema_enabled: false
+ema_eval_enabled: false
+output_dir: ./outputs/ablation/det_no_ema

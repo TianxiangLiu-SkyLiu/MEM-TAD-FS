@@ -1,0 +1,7 @@
+_base_: ./base_19_middle.yml
+
+deep_mem: true
+deep_memory_input_mode: residual
+memory_transformer_deep_prior_enabled: false
+memory_transformer_deep_prior_loss_enabled: false
+output_dir: ./outputs/ablation/core_m3_deep_residual_concat/seed3407

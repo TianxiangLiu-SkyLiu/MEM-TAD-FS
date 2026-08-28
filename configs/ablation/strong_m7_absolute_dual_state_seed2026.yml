@@ -1,0 +1,11 @@
+_base_: ./base_19_c16_t64_middle.yml
+
+# Exact-parameter control for the full model. Only the deep-memory write source
+# changes from the shallow-state residual to the absolute shallow state.
+seed: 2026
+deep_mem: true
+deep_memory_input_mode: shallow
+memory_transformer_prior_source: deep
+memory_transformer_deep_prior_enabled: true
+memory_transformer_deep_prior_loss_enabled: true
+output_dir: ./outputs/ablation/strong_m7_absolute_dual_state/seed2026

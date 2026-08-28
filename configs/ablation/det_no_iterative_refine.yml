@@ -1,0 +1,4 @@
+_base_: ./base_19_middle.yml
+
+memory_transformer_iterative_refine_enabled: false
+output_dir: ./outputs/ablation/det_no_iterative_refine

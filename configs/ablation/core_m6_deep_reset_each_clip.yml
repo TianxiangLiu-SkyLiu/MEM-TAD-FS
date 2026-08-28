@@ -1,0 +1,5 @@
+_base_: ./base_19_middle.yml
+
+# Same parameters as full model, but deep state cannot persist across clips.
+deep_memory_reset_each_clip: true
+output_dir: ./outputs/ablation/core_m6_deep_reset_each_clip/seed3407
